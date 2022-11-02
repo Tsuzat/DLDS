@@ -1,16 +1,9 @@
-# dlds
+# DLDS (Deep Learning Defects Sampling)
 
-A new Flutter project.
+A concept project to detect surface defects from steel surfaces using machine learning
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Download zip file from release.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+> **NOTE** Currently only tested on windows.
