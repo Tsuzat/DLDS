@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:image/image.dart' as img;
 import 'package:logger/logger.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:lottie/lottie.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,12 +97,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
         child: _imagePath == null
-            ? const Text(
-                "No Image Selected",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              )
+            ? defaultImage()
             : Column(
                 children: [
                   const Expanded(
@@ -126,11 +122,37 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
+        tooltip: "Select Image",
         child: const Icon(
           Icons.image_search_rounded,
           color: Colors.white,
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
+}
+
+Column defaultImage() {
+  return Column(
+    children: [
+      const Expanded(
+        child: SizedBox(),
+      ),
+      Lottie.asset(
+        "assets/defaultImage.json",
+        width: 200,
+        height: 200,
+      ),
+      const Text(
+        "No Image Selected",
+        style: TextStyle(
+          fontSize: 16,
+        ),
+      ),
+      const Expanded(
+        child: SizedBox(),
+      ),
+    ],
+  );
 }
