@@ -1,5 +1,6 @@
 import 'package:dlds/classifier.dart';
 import 'package:dlds/classifier_float.dart';
+import 'package:dlds/percentage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_windows/image_picker_windows.dart';
@@ -46,11 +47,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? _imagePath;
-  Image? _imageWidget;
   late Classifier _classifier;
   var logger = Logger();
   String? label;
-  String? score;
+  double? score;
 
   @override
   void initState() {
@@ -65,11 +65,6 @@ class _HomePageState extends State<HomePage> {
       _imagePath = null;
     } else {
       _imagePath = pickedFile.path;
-      _imageWidget = Image.file(
-        File(
-          _imagePath!,
-        ),
-      );
       _predict();
     }
     setState(() {});
@@ -80,7 +75,7 @@ class _HomePageState extends State<HomePage> {
         img.decodeImage(File(_imagePath!).readAsBytesSync())!;
     var pred = _classifier.predict(imageInput);
     label = pred.label;
-    score = (pred.score * 100).toStringAsFixed(2);
+    score = (pred.score * 100);
   }
 
   @override
@@ -103,16 +98,43 @@ class _HomePageState extends State<HomePage> {
                   const Expanded(
                     child: SizedBox(),
                   ),
-                  _imageWidget!,
+                  Image.file(
+                    File(
+                      _imagePath!,
+                    ),
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
                   Text(
-                    "Category: ${label ?? 'Unknown'}\n Confidence: ${score ?? 'Unknown'}%",
+                    label ?? 'Unknown',
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                     ),
                     textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  percentage(
+                    title: Text(
+                      "${score!.toStringAsFixed(2)} %",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    background: Colors.lightGreenAccent,
+                    foreground: Colors.lightGreen,
+                    width: 200,
+                    height: 20,
+                    maximum: 100,
+                    borderRadius: 5,
+                    value: score!,
                   ),
                   const Expanded(
                     child: SizedBox(),
