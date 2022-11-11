@@ -2,6 +2,7 @@ import 'package:dlds/classifier.dart';
 import 'package:dlds/classifier_float.dart';
 import 'package:dlds/percentage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_toastr/flutter_toastr.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_windows/image_picker_windows.dart';
 import 'dart:io';
@@ -9,6 +10,8 @@ import 'package:image/image.dart' as img;
 import 'package:logger/logger.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter/services.dart';
+import 'dart:convert';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -98,6 +101,35 @@ class _HomePageState extends State<HomePage> {
                   const Expanded(
                     child: SizedBox(),
                   ),
+                  TextButton(
+                    onPressed: () {
+                      Map<String, dynamic> toCopy = {
+                        "imagePath": _imagePath,
+                        "Category": label,
+                        "Score": score!.toStringAsFixed(2),
+                      };
+                      String data = jsonEncode(toCopy);
+                      Clipboard.setData(
+                        ClipboardData(
+                          text: data,
+                        ),
+                      );
+                      FlutterToastr.show(
+                        "Copied in ClipBoard",
+                        context,
+                        duration: FlutterToastr.lengthShort,
+                        position: FlutterToastr.bottom,
+                        backgroundColor: const Color.fromRGBO(0, 0, 0, 0.5),
+                      );
+                      setState(() {});
+                    },
+                    child: const Text(
+                      "Copy Result",
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Image.file(
                     File(
                       _imagePath!,
@@ -105,6 +137,7 @@ class _HomePageState extends State<HomePage> {
                     width: 200,
                     height: 200,
                     fit: BoxFit.cover,
+                    filterQuality: FilterQuality.high,
                   ),
                   const SizedBox(
                     height: 20,
