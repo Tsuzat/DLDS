@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
   var logger = Logger();
   String? label;
   double? score;
+  int? predictionTime;
 
   @override
   void initState() {
@@ -74,11 +75,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _predict() async {
+    var sw = Stopwatch()..start();
     img.Image imageInput =
         img.decodeImage(File(_imagePath!).readAsBytesSync())!;
     var pred = _classifier.predict(imageInput);
     label = pred.label;
     score = (pred.score * 100);
+    predictionTime = sw.elapsed.inMilliseconds;
   }
 
   @override
@@ -119,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                         context,
                         duration: FlutterToastr.lengthShort,
                         position: FlutterToastr.bottom,
-                        backgroundColor: const Color.fromRGBO(0, 0, 0, 0.5),
+                        backgroundColor: const Color.fromRGBO(0, 0, 0, 0.6),
                       );
                       setState(() {});
                     },
@@ -169,6 +172,14 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: 5,
                     value: score!,
                   ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  predictionTime != null
+                      ? Text(
+                          "Completed in $predictionTime ms",
+                        )
+                      : const SizedBox(),
                   const Expanded(
                     child: SizedBox(),
                   )
