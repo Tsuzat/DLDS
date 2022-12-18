@@ -29,11 +29,11 @@ class _SettingsDialogueState extends State<SettingsDialogue> {
                 children: [
                   isDark
                       ? LottieBuilder.asset(
-                          "assets/dark_setting.json",
+                          "assets/animated/setting_white.json",
                           width: 16,
                         )
                       : LottieBuilder.asset(
-                          "assets/light_setting.json",
+                          "assets/animated/setting_black.json",
                           width: 16,
                         ),
                   const SizedBox(

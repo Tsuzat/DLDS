@@ -4,6 +4,7 @@ import 'package:dlds/themes/theme_provider.dart';
 import 'package:dlds/widgets/right_side_widget.dart';
 import 'package:dlds/widgets/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -15,16 +16,38 @@ class RightSide extends StatefulWidget {
 }
 
 class _RightSideState extends State<RightSide> {
-  bool animateSetting = false;
+  bool isHoveringSetting = false;
   bool animateTheme = false;
-  Widget setting = const Icon(
-    Icons.settings,
-    size: 20,
-  );
+
+  late Widget setting;
+
+  void setSettingIcon(bool isDark) {
+    if (isHoveringSetting) {
+      setting = isDark
+          ? LottieBuilder.asset(
+              "assets/animated/setting_white.json",
+              repeat: true,
+            )
+          : LottieBuilder.asset(
+              "assets/animated/setting_black.json",
+              repeat: true,
+            );
+    } else {
+      setting = isDark
+          ? SvgPicture.asset(
+              "assets/static/setting_white.svg",
+            )
+          : SvgPicture.asset(
+              "assets/static/setting_black.svg",
+            );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeProvider theme = Provider.of<ThemeProvider>(context);
     bool isDark = theme.isDark;
+    setSettingIcon(isDark);
     return Expanded(
       child: Column(
         children: [
@@ -42,32 +65,28 @@ class _RightSideState extends State<RightSide> {
                 Expanded(
                   child: MoveWindow(),
                 ),
-
                 Tooltip(
                   message: "Settings",
-                  child: InkWell(
-                    child: isDark
-                        ? LottieBuilder.asset(
-                            "assets/setting_lotti_dark.json",
-                            width: 16,
-                            animate: animateSetting,
-                          )
-                        : LottieBuilder.asset(
-                            "assets/setting_lotti_light.json",
-                            width: 16,
-                            animate: animateSetting,
-                          ),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => const SettingsDialogue(),
-                      );
-                    },
-                    onHover: (value) {
-                      setState(() {
-                        animateSetting = value;
-                      });
-                    },
+                  child: SizedBox(
+                    height: 16,
+                    width: 16,
+                    child: InkWell(
+                      child: setting,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const SettingsDialogue(),
+                        );
+                      },
+                      onHover: (value) {
+                        setState(() {
+                          isHoveringSetting = value;
+                          setState(() {
+                            setSettingIcon(isDark);
+                          });
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -78,13 +97,13 @@ class _RightSideState extends State<RightSide> {
                   child: InkWell(
                     child: isDark
                         ? LottieBuilder.asset(
-                            "assets/moon_light.json",
+                            "assets/animated/moon_light.json",
                             width: 16,
                             height: 16,
                             animate: animateTheme,
                           )
                         : LottieBuilder.asset(
-                            "assets/sun.json",
+                            "assets/animated/sun.json",
                             width: 16,
                             height: 16,
                             animate: animateTheme,

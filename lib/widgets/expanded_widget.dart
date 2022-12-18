@@ -55,11 +55,11 @@ class _ExpandableListTileState extends State<ExpandableListTile> {
                   const Spacer(),
                   _isExpanded
                       ? Icon(
-                          Icons.arrow_drop_up,
+                          Icons.keyboard_arrow_down_rounded,
                           size: widget.iconSize,
                         )
                       : Icon(
-                          Icons.arrow_drop_down,
+                          Icons.keyboard_arrow_right_rounded,
                           size: widget.iconSize,
                         ),
                 ],
